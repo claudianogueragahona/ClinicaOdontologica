@@ -39,4 +39,12 @@ class OdontologoServiceTest {
         assertFalse(odontologoSalidaDtoList.isEmpty());
     }
 
+    @Test
+    @Order(4)
+    void deberiaVerificarQueLaListaDeOdontologosContieneUnOdontologoDeNombreAlonso(){
+        List<OdontologoSalidaDto> odontologoSalidaDtoList = odontologoService.listarOdontologos();
+
+        assertTrue(odontologoSalidaDtoList.stream().anyMatch(p -> p.getNombre().equals("Alonso")));
+    }
+
 }
