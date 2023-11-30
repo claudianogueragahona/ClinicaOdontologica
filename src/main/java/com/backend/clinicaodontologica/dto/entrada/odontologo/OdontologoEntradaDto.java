@@ -11,7 +11,7 @@ public class OdontologoEntradaDto {
 
     @NotNull(message = "La matricula del odontólogo no puede ser nula")
     @NotBlank(message = "Debe especificarse la matricula del odontólogo")
-    @Size(min = 10, message = "El campo debe tener mínimo 10 caracteres")
+    @Size(min = 4, message = "El campo debe tener mínimo 4 caracteres")
     private String matricula;
 
     @Size(max = 50, message = "El nombre del odontólogo debe tener hasta 50 caracteres")

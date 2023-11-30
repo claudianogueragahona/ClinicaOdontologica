@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class OdontologoServiceTest {
@@ -15,9 +17,26 @@ class OdontologoServiceTest {
     @Test
     @Order(1)
     void noSeDeberiaRegistrarUnOdontologoSinMatricula() {
-        OdontologoEntradaDto odontologoEntradaDto = new OdontologoEntradaDto("485768", "Mariela", "Lucena");
+        OdontologoEntradaDto odontologoEntradaDto = new OdontologoEntradaDto(null, "Mariela", "Lucena");
         OdontologoSalidaDto odontologoSalidaDto = odontologoService.guardarOdontologo(odontologoEntradaDto);
         assertTrue(odontologoSalidaDto.getMatricula() != null);
+    }
+
+    @Test
+    @Order(2)
+    void deberiaRegistrarUnOdontologoDeNombreAlonso(){
+        OdontologoEntradaDto odontologoEntradaDto = new OdontologoEntradaDto("25847", "Alonso", "De Ercilla");
+
+        OdontologoSalidaDto odontologoSalidaDto = odontologoService.guardarOdontologo(odontologoEntradaDto);
+        assertEquals("Alonso", odontologoSalidaDto.getNombre());
+    }
+
+    @Test
+    @Order(3)
+    void deberiaDevolverUnaListaNoVaciaDePacientes(){
+        List<OdontologoSalidaDto> odontologoSalidaDtoList = odontologoService.listarOdontologos();
+
+        assertFalse(odontologoSalidaDtoList.isEmpty());
     }
 
 }

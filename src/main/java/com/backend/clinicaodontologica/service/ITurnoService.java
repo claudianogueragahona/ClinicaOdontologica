@@ -12,11 +12,11 @@ public interface ITurnoService {
 
     List<TurnoSalidaDto> listarTurnos();
 
-    TurnoSalidaDto buscarTurnoPorId(Long id);
+    TurnoSalidaDto buscarTurnoPorId(Long id) throws ResourceNotFoundException;
 
-    TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto tuno);
+    TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto tuno) throws BadRequestException;
 
-    void eliminarTurno(Long id);
+    void eliminarTurno(Long id) throws ResourceNotFoundException;
 
 
 }

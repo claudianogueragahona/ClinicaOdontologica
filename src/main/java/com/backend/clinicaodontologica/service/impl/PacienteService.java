@@ -32,13 +32,13 @@ public class PacienteService implements IPacienteService {
     }
 
     public PacienteSalidaDto registrarPaciente(PacienteEntradaDto paciente) {
-        //convertimos mediante el mapper de dtoEntrada a entidad
+
         LOGGER.info("PacienteEntradaDto: " + JsonPrinter.toString(paciente));
         Paciente pacienteEntidad = modelMapper.map(paciente, Paciente.class);
 
-        //mandamos a persistir a la capa dao y obtenemos una entidad
+
         Paciente pacienteAPersistir = pacienteRepository.save(pacienteEntidad);
-        //transformamos la entidad obtenida en salidaDto
+
         PacienteSalidaDto pacienteSalidaDto = modelMapper.map(pacienteAPersistir, PacienteSalidaDto.class);
         LOGGER.info("PacienteSalidaDto: " + JsonPrinter.toString(pacienteSalidaDto));
         return pacienteSalidaDto;
@@ -57,14 +57,17 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public PacienteSalidaDto buscarPacientePorId(Long id) {
+    public PacienteSalidaDto buscarPacientePorId(Long id) throws ResourceNotFoundException {
         Paciente pacienteBuscado = pacienteRepository.findById(id).orElse(null);
         PacienteSalidaDto pacienteEncontrado = null;
 
         if (pacienteBuscado != null) {
             pacienteEncontrado = modelMapper.map(pacienteBuscado, PacienteSalidaDto.class);
             LOGGER.info("Paciente encontrado: {}", JsonPrinter.toString(pacienteEncontrado));
-        } else LOGGER.error("El id no se encuentra registrado en la base de datos");
+        } else {
+            LOGGER.error("El id no se encuentra registrado en la base de datos");
+            throw new ResourceNotFoundException("No se ha encontrado el paciente con id " + id);
+        }
 
         return pacienteEncontrado;
     }

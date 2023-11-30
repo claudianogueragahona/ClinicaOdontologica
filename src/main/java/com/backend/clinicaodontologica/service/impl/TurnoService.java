@@ -76,7 +76,7 @@ public class TurnoService implements ITurnoService {
         Turno turnoAPersistir = turnoRepository.save(turnoEntidad);
         LOGGER.info("Turno a Persistir: {}", JsonPrinter.toString(turnoAPersistir));
 
-        TurnoSalidaDto turnoSalidaDto = crearTurnoSalidaDto(turnoAPersistir);
+       TurnoSalidaDto turnoSalidaDto = crearTurnoSalidaDto(turnoAPersistir);
         LOGGER.info("TurnoSalidaDto: {}", JsonPrinter.toString(turnoSalidaDto));
         return turnoSalidaDto;
     }
@@ -96,20 +96,24 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoSalidaDto buscarTurnoPorId(Long id) {
+    public TurnoSalidaDto buscarTurnoPorId(Long id) throws ResourceNotFoundException {
         Turno turnoBuscado = turnoRepository.findById(id).orElse(null);
         TurnoSalidaDto turnoEncontrado = null;
 
         if (turnoBuscado != null) {
             turnoEncontrado = modelMapper.map(turnoBuscado, TurnoSalidaDto.class);
             LOGGER.info("Turno encontrado: {}", JsonPrinter.toString(turnoEncontrado));
-        } else LOGGER.error("El id no se encuentra registrado en la base de datos");
+        } else {
+            LOGGER.error("El id no se encuentra registrado en la base de datos");
+            throw new ResourceNotFoundException("No se ha encontrado el turno con id "+ id);
+
+        }
 
         return turnoEncontrado;
     }
 
     @Override
-    public TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto turno) {
+    public TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto turno) throws BadRequestException {
         Turno turnoRecibido = modelMapper.map(turno, Turno.class);
         Turno turnoAActualizar = turnoRepository.findById(turnoRecibido.getId()).orElse(null);
 
@@ -124,7 +128,7 @@ public class TurnoService implements ITurnoService {
 
         } else {
             LOGGER.error("No fue posible actualizar el turno porque no se encuentra en nuestra base de datos");
-            //lanzar excepcion correspondiente
+            throw new BadRequestException("Este turno no existe");
         }
 
 
@@ -132,13 +136,13 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public void eliminarTurno(Long id) {
+    public void eliminarTurno(Long id) throws ResourceNotFoundException {
         if (turnoRepository.findById(id).orElse(null) != null) {
             turnoRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado el turno con id: {}", id);
         } else {
             LOGGER.error("No se ha encontrado el turno con id {}", id);
-            //excepcion a lanzar aqui
+            throw new ResourceNotFoundException("No se ha encontrado el turno con id "+ id);
         }
     }
 
