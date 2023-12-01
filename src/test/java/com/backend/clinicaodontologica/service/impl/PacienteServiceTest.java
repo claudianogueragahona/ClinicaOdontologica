@@ -20,7 +20,7 @@ class PacienteServiceTest {
 
     @Test
     @Order(1)
-    void deberiaRegistrarUnPacienteDeNombreJuanYRetornarElId(){
+    void deberiaRegistrarUnPacienteDeNombreCamilaYRetornarElId(){
         PacienteEntradaDto pacienteEntradaDto = new PacienteEntradaDto("Camila", "Lopez", 123456789, LocalDate.of(2023, 12, 24), new DomicilioEntradaDto(";Gaete", 12352154, "Viña", "Valparaiso"));
 
         PacienteSalidaDto pacienteSalidaDto = pacienteService.registrarPaciente(pacienteEntradaDto);

@@ -30,7 +30,7 @@ public class PacienteController {
 
     //GET
     @GetMapping("{id}")
-    public ResponseEntity<PacienteSalidaDto> obtenerPacientePorId(@PathVariable Long id) {
+    public ResponseEntity<PacienteSalidaDto> obtenerPacientePorId(@PathVariable Long id) throws ResourceNotFoundException {
         return new ResponseEntity<>(pacienteService.buscarPacientePorId(id), HttpStatus.OK);
     }
 
